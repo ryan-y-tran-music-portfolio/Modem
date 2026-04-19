@@ -49,6 +49,15 @@ def tone_power(samples: np.ndarray, target_frequency: int, sample_rate: int) -> 
 
     return I**2 + Q**2
 
+def samples_to_bits(samples: np.ndarray, samples_per_bit: int, sample_rate: int) -> list[int]:
+    """Convert samples into blocks, calculate powers from those blocks, and determine bit value.
+    
+    Args:
+        samples: Numpy array of samples
+        samples_per_bit: Numerical amount of samples per bit
+        sample_rate: Sample Rate
+    """
+
 def decode_wavfile(file_path: str) -> str:
     """Decode a WAV File via a simplified Bell 103 Modem Protocol
     
