@@ -6,6 +6,25 @@ from scipy.io import wavfile
 def sanity_check_tone_power() -> None:
     """Sanity check the tone_power function."""
 
+    sample_rate = 48000
+    N = 160 # Larger N, larger Ratio
+    t = np.arange(N) / sample_rate
+
+    space_block = 0.5 * np.sin(2 * np.pi * 2025 * t) # Amplitude of 0.5 (in the middle)
+    mark_block = 0.5 * np.sin(2 * np.pi * 2225 * t)
+    
+    print("SPACE BLOCK TEST\n" + "=" * 20)
+    power_2025_space = tone_power(space_block, 2025, sample_rate)
+    power_2225_space = tone_power(space_block, 2225, sample_rate)
+    print(f"Power at 2025 HZ: {power_2025_space}\nPower at 2225 HZ: {power_2225_space}")
+    print(f"{'PASS\n' if power_2025_space > power_2225_space else 'FAIL\n'}")
+
+    print("MARK BLOCK TEST\n" + "=" * 20)
+    mark_2025_space = tone_power(mark_block, 2025, sample_rate)
+    mark_2225_space = tone_power(mark_block, 2225, sample_rate)
+    print(f"Power at 2025 HZ: {mark_2025_space}\nPower at 2225 HZ: {mark_2225_space}")
+    print(f"{'PASS\n' if mark_2025_space < mark_2225_space else 'FAIL\n'}")
+
 def tone_power(samples: np.ndarray, target_frequency: int, sample_rate: int) -> float:
     """Get the power for a single target freuqnecy
     
@@ -19,7 +38,7 @@ def tone_power(samples: np.ndarray, target_frequency: int, sample_rate: int) -> 
     """
 
     N = len(samples)
-    n = np.arrange(N) 
+    n = np.arange(N) 
 
     angle = 2 * np.pi * target_frequency * n / sample_rate
     cos_angle = np.cos(angle)
@@ -48,7 +67,4 @@ def decode_wavfile(file_path: str) -> str:
     return f"{file_path} message: TO BE ADDED HERE"
 
 if __name__ == "__main__":
-    try:
-        print(decode_wavfile("message.wav"))
-    except Exception as e:
-        print (e)
+    sanity_check_tone_power()
