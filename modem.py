@@ -3,6 +3,9 @@ import os
 import numpy as np
 from scipy.io import wavfile
 
+def sanity_check_tone_power() -> None:
+    """Sanity check the tone_power function."""
+
 def tone_power(samples: np.ndarray, target_frequency: int, sample_rate: int) -> float:
     """Get the power for a single target freuqnecy
     
