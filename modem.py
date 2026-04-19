@@ -15,6 +15,18 @@ def tone_power(samples: np.ndarray, target_frequency: int, sample_rate: int) -> 
         Power for target frequency
     """
 
+    N = len(samples)
+    n = np.arrange(N) 
+
+    angle = 2 * np.pi * target_frequency * n / sample_rate
+    cos_angle = np.cos(angle)
+    sin_angle = np.sin(angle)
+
+    I = np.dot(samples, cos_angle)
+    Q = np.dot(samples, sin_angle)
+
+    return I**2 + Q**2
+
 def decode_wavfile(file_path: str) -> str:
     """Decode a WAV File via a simplified Bell 103 Modem Protocol
     
