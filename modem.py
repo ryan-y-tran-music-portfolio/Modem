@@ -57,6 +57,19 @@ def samples_to_bits(samples: np.ndarray, samples_per_bit: int, sample_rate: int)
         samples_per_bit: Numerical amount of samples per bit
         sample_rate: Sample Rate
     """
+    bits = []
+
+    for i in range(0, len(samples) - samples_per_bit + 1, samples_per_bit):
+        block_to_check = samples[i: i + samples_per_bit]
+
+        power_space = tone_power(block_to_check, 2025, sample_rate)
+        mark_space = tone_power(block_to_check, 2225, sample_rate)
+        bit = 0 if power_space > mark_space else 1
+
+        print(f"Power Space: {power_space} | Mark Space: {mark_space} | Bit: {bit}") # Debug
+        bits.append(bit)
+    
+    return bits
 
 def decode_wavfile(file_path: str) -> str:
     """Decode a WAV File via a simplified Bell 103 Modem Protocol
@@ -72,8 +85,9 @@ def decode_wavfile(file_path: str) -> str:
         raise Exception(f"{file_path} should be a 48 kilosample per second 16-bit mono WAV file.")
 
     samples = data.astype(np.float32) / 32768.0 # Convert samples to floats
+    bits = samples_to_bits(samples, 160, sample_rate)
     
     return f"{file_path} message: TO BE ADDED HERE"
 
 if __name__ == "__main__":
-    sanity_check_tone_power()
+    decode_wavfile("message.wav")
