@@ -29,9 +29,9 @@ def tone_power(samples: np.ndarray, target_frequency: int, sample_rate: int) -> 
     """Get the power for a single target freuqnecy
     
     Args:
-        samples: Numpy array of block of samples
-        target_frequency: Candidate Frequency (2025 or 2225) in Hz
-        sample_rate: Sample Rate
+        samples (np.ndarray): Numpy array of block of samples
+        target_frequency (int): Candidate Frequency (2025 or 2225) in Hz
+        sample_rate (int): Sample Rate
 
     Returns:
         Power for target frequency
@@ -53,9 +53,9 @@ def samples_to_bits(samples: np.ndarray, samples_per_bit: int, sample_rate: int)
     """Convert samples into blocks, calculate powers from those blocks, and determine bit value.
     
     Args:
-        samples: Numpy array of samples
-        samples_per_bit: Numerical amount of samples per bit
-        sample_rate: Sample Rate
+        samples (np.ndarray): Numpy array of samples
+        samples_per_bit (int): Numerical amount of samples per bit
+        sample_rate (int): Sample Rate
     """
     bits = []
 
@@ -71,10 +71,10 @@ def samples_to_bits(samples: np.ndarray, samples_per_bit: int, sample_rate: int)
     
     return bits
 
-def modem_byte_framing(bits: [int]) -> bytearray:
+def modem_byte_framing(bits: list[int]) -> bytearray:
     """Convert bits into message bytes
     Args:
-        bits: Array of Bits
+        bits (list[int]): Array of Bits
     
         Returns:
             Message Byte Array
@@ -85,7 +85,7 @@ def decode_wavfile(file_path: str) -> str:
     """Decode a WAV File via a simplified Bell 103 Modem Protocol
     
     Args:
-        file_path: Path to WAV file to decode.
+        file_path (str): Path to WAV file to decode.
 
     Returns:
         A string of the decoded WAV file.
