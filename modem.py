@@ -101,15 +101,22 @@ def decode_wavfile(file_path: str) -> str:
     Returns:
         A string of the decoded WAV file.
     """
-    sample_rate, data = wavfile.read(file_path)
-    if sample_rate != 48000 or data.ndim > 1:
-        raise Exception(f"{file_path} should be a 48 kilosample per second 16-bit mono WAV file.")
+    try:
+        sample_rate, data = wavfile.read(file_path)
+        if sample_rate != 48000 or data.ndim > 1:
+            raise Exception(f"{file_path} should be a 48 kilosample per second 16-bit mono WAV file.")
 
-    samples = data.astype(np.float32) / 32768.0 # Convert samples to floats
-    bits = samples_to_bits(samples, 160, sample_rate)
-    byte_array = modem_byte_framing(bits)
-    
-    return f"{file_path} message: TO BE ADDED HERE"
+        samples = data.astype(np.float32) / 32768.0 # Convert samples to floats
+        bits = samples_to_bits(samples, 160, sample_rate)
+        byte_array = modem_byte_framing(bits)
+
+        message = byte_array.decode('ascii')
+        print(f'{file_path} message: {message}')
+        with open("message.txt", "w", encoding="utf-8") as f:
+            f.write(message)
+
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     decode_wavfile("message.wav")
