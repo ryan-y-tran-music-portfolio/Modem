@@ -78,8 +78,19 @@ def modem_byte_framing(bits: list[int]) -> bytearray:
     
         Returns:
             Message Byte Array
-
     """
+    byte_array = bytearray()
+
+    for i in range(0, len(bits) - 9, 10):
+        frame = bits[i : i + 10]
+        data_bits = frame[1 : 9]
+
+        byte = 0 # initialize byte
+        for bit_position, bit_value in enumerate(data_bits):
+            byte |= (bit_value << bit_position) # LSB first
+        byte_array.append(byte)
+    
+    return byte_array
 
 def decode_wavfile(file_path: str) -> str:
     """Decode a WAV File via a simplified Bell 103 Modem Protocol
@@ -96,6 +107,7 @@ def decode_wavfile(file_path: str) -> str:
 
     samples = data.astype(np.float32) / 32768.0 # Convert samples to floats
     bits = samples_to_bits(samples, 160, sample_rate)
+    byte_array = modem_byte_framing(bits)
     
     return f"{file_path} message: TO BE ADDED HERE"
 
