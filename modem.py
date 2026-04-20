@@ -71,6 +71,16 @@ def samples_to_bits(samples: np.ndarray, samples_per_bit: int, sample_rate: int)
     
     return bits
 
+def modem_byte_framing(bits: [int]) -> bytearray:
+    """Convert bits into message bytes
+    Args:
+        bits: Array of Bits
+    
+        Returns:
+            Message Byte Array
+
+    """
+
 def decode_wavfile(file_path: str) -> str:
     """Decode a WAV File via a simplified Bell 103 Modem Protocol
     
